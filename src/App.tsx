@@ -1,6 +1,7 @@
 import {ClerkProvider} from "@clerk/clerk-react";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.tsx";
+import RootLayout from "./layout/RootLayout.tsx";
 
 export default function App() {
     const clerkPubKey= import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -8,7 +9,11 @@ export default function App() {
         <div>
             <ClerkProvider publishableKey={clerkPubKey}>
                 <BrowserRouter>
-                    <Home />
+                    <Routes>
+                        <Route element={<RootLayout />}>
+                            <Route path={'/'} element={<Home />} />
+                        </Route>
+                    </Routes>
                 </BrowserRouter>
             </ClerkProvider>
         </div>
