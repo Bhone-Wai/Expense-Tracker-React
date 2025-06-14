@@ -1,11 +1,21 @@
 import {Calendar} from "lucide-react";
-import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/clerk-react";
-import MonthNavigator from "@/components/MonthNavigator.tsx";
-import BudgetDialog from "@/components/BudgetDialog.tsx";
-import {Badge} from "@/components/ui/badge.tsx";
+import {SignedIn, SignedOut, SignInButton, useAuth, UserButton} from "@clerk/clerk-react";
+import MonthNavigator from "@/components/header/MonthNavigator.tsx";
+import BudgetDialog from "@/components/header/BudgetDialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {useEffect} from "react";
 
-export default function Navbar() {
+export default function Header() {
+    const { getToken, isSignedIn } = useAuth();
+
+    useEffect(() => {
+        const fetchToken = async () => {
+            const token = await getToken();
+            console.log('JWT Token: ', token);
+        }
+        fetchToken();
+    }, [isSignedIn]);
+
     return (
         <header className={'bg-white border-b border-gray-200 px-4 py-4'}>
             <div className={'max-w-7xl mx-auto flex items-center justify-between'}>
@@ -22,9 +32,6 @@ export default function Navbar() {
 
                 {/* Right Side: Transactions + Dialog */}
                 <div className="flex items-center gap-3">
-                    <Badge variant={"outline"} className={'text-sm'}>
-                        {/*{currentMonthTransactions.length}*/} 2 transactions
-                    </Badge>
                     <BudgetDialog />
 
                     <SignedIn>

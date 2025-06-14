@@ -5,8 +5,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "../components/ui/dialog.tsx";
-import {Button} from "../components/ui/button.tsx";
+} from "../ui/dialog.tsx";
+import {Button} from "../ui/button.tsx";
 import {Home, PiggyBank, Save, Settings, ShoppingCart} from "lucide-react";
 import {format} from "date-fns";
 import {useState} from "react";
@@ -30,7 +30,7 @@ export default function BudgetDialog() {
     const currentMonthYear = format(now, 'MMM yyy')
     return (
         <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button variant={"outline"}>
                     <Settings className={'h-4 w-4 mr-2'} />
                     Budget Plan
