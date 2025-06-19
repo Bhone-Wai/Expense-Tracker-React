@@ -1,10 +1,10 @@
 import TabsLists from "@/components/tabs/TabsLists.tsx";
+import TabsWrapper from "@/components/tabs/TabsWrapper.tsx";
 
 export default function MonthlyHistory() {
     return (
-        <div>
-            <TabsLists />
+        <TabsWrapper>
             Monthly History
-        </div>
+        </TabsWrapper>
     );
 }

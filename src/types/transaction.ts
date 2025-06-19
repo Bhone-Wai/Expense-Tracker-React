@@ -1,6 +1,8 @@
 export type transactionType = 'INCOME' | 'EXPENSE';
 
-export type categoryType = 'WANTS' | 'NEEDS' | 'SAVINGS';
+export type incomeCategory = 'SALARY' | 'FREELANCE' | 'BONUS' | 'INVESTMENT';
+
+export type expenseCategory = 'WANTS' | 'NEEDS' | 'SAVINGS';
 
 export interface Transaction {
     id: string;
@@ -9,7 +11,8 @@ export interface Transaction {
     title: string;
     amount: number;
     type: transactionType;
-    category: categoryType;
+    incomeCategory?: incomeCategory;
+    expenseCategory?: expenseCategory;
     date: string;
     createdAt: string;
 }

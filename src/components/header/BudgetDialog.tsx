@@ -9,27 +9,63 @@ import {
 import {Button} from "../ui/button.tsx";
 import {Home, PiggyBank, Save, Settings, ShoppingCart} from "lucide-react";
 import {format} from "date-fns";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import useBudgets from "@/hooks/useBudgets.ts";
 
 export default function BudgetDialog() {
     const [budgetNeed, setBudgetNeed] = useState(0);
     const [budgetWant, setBudgetWant] = useState(0);
     const [budgetSave, setBudgetSave] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const { setBudgets, isSettingBudgets, setBudgetError, setBudgetSuccess, budgetVsActual } = useBudgets();
+
+    useEffect(() => {
+        if (isOpen && budgetVsActual) {
+            console.log("budgetVsActual", budgetVsActual);
+            const needs = budgetVsActual.find(b => b.category === 'NEEDS')?.budgeted || 0;
+            const wants = budgetVsActual.find(b => b.category === 'WANTS')?.budgeted || 0;
+            const savings = budgetVsActual.find(b => b.category === 'SAVINGS')?.budgeted || 0;
+
+            setBudgetNeed(needs);
+            setBudgetWant(wants);
+            setBudgetSave(savings);
+        }
+    }, [isOpen, budgetVsActual]);
 
     const formatCurrency = (amount: number) =>
         amount.toLocaleString("th-TH", { style: 'currency', currency: 'THB' });
 
-    const handleSubmitBudget = () => {
-        console.log('Submit');
-    }
+    const handleSubmitBudget = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const budgets = [];
+
+        if (budgetNeed > 0) budgets.push({ category: 'NEEDS', amount: budgetNeed });
+        if (budgetWant > 0) budgets.push({ category: 'WANTS', amount: budgetWant });
+        if (budgetSave > 0) budgets.push({ category: 'SAVINGS', amount: budgetSave });
+
+        setBudgets(budgets);
+    };
+
+    // Close dialog on successful submission
+    useEffect(() => {
+        if (setBudgetSuccess) {
+            setIsOpen(false);
+            setBudgetNeed(0);
+            setBudgetWant(0);
+            setBudgetSave(0);
+        }
+    }, [setBudgetSuccess]);
 
     const now = new Date();
-    const currentMonthYear = format(now, 'MMM yyy')
+    const currentMonthYear = format(now, 'MMM yyyy');
+
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button variant={"outline"}>
                     <Settings className={'h-4 w-4 mr-2'} />
@@ -74,23 +110,37 @@ export default function BudgetDialog() {
                                     id={field.id}
                                     type={"number"}
                                     step={'0.01'}
-                                    value={field.value}
-                                    onChange={e => field.setter(parseFloat(e.target.value))}
+                                    min="0"
+                                    value={field.value || ''}
+                                    onChange={e => field.setter(parseFloat(e.target.value) || 0)}
                                     placeholder={'0.00'}
                                 />
                             </div>
                         </div>
                     ))}
+
                     <Separator />
+
                     <div className={'flex justify-between items-center'}>
                         <span className={'font-medium'}>Total Budget:</span>
                         <span className="text-lg font-bold">
                             {formatCurrency(budgetNeed + budgetWant + budgetSave)}
                         </span>
                     </div>
-                    <Button type={"submit"} className={'w-full'}>
+
+                    {setBudgetError && (
+                        <div className="text-red-600 text-sm">
+                            Failed to save budget. Please try again.
+                        </div>
+                    )}
+
+                    <Button
+                        type={"submit"}
+                        className={'w-full'}
+                        disabled={isSettingBudgets}
+                    >
                         <Save className={'h-4 w-4 mr-2'} />
-                        Save Budget Plan
+                        {isSettingBudgets ? 'Saving...' : 'Save Budget Plan'}
                     </Button>
                 </form>
             </DialogContent>
