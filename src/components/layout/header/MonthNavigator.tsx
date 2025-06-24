@@ -8,5 +8,5 @@ export default function MonthNavigator() {
         <div>
             {currentMonthYear}
         </div>
-    )
+    );
 }

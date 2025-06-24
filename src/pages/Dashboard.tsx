@@ -1,9 +1,8 @@
-import TabsLists from "@/components/tabs/TabsLists.tsx";
-import AddTransactionForm from "@/components/AddTransactionForm.tsx";
-import SummaryStats from "@/components/SummaryStats.tsx";
-import CategoryBreakdown from "@/components/CategoryBreakdown.tsx";
-import RecentTransactions from "@/components/RecentTransactions.tsx";
-import TabsWrapper from "@/components/tabs/TabsWrapper.tsx";
+import TransactionForm from "@/components/dashboard/TransactionForm.tsx";
+import MonthlySummary from "@/components/dashboard/MonthlySummary.tsx";
+import CategorySpending from "@/components/dashboard/CategorySpending.tsx";
+import RecentTransactions from "@/components/dashboard/RecentTransactions.tsx";
+import TabsWrapper from "@/components/layout/tabs/TabsWrapper.tsx";
 import {TabsContent} from "@/components/ui/tabs.tsx";
 
 export default function Dashboard() {
@@ -14,7 +13,7 @@ export default function Dashboard() {
                     {/* Main Content */}
                     <div className="lg:col-span-3 space-y-6">
                         {/* Add Transaction Form */}
-                        <AddTransactionForm />
+                        <TransactionForm />
 
                         {/* Recent Transactions */}
                         <RecentTransactions />
@@ -24,10 +23,10 @@ export default function Dashboard() {
                     {/* Sidebar */}
                     <div className="space-y-6">
                         {/* Summary Stats */}
-                        <SummaryStats />
+                        <MonthlySummary />
 
                         {/* Category Breakdown */}
-                        <CategoryBreakdown />
+                        <CategorySpending />
                     </div>
                 </div>
             </TabsContent>

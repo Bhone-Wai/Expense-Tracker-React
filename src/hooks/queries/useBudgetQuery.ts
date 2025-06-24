@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {useBudgetApi} from "@/features/budgets/api.ts";
+import {useBudgetApi} from "@/hooks/api/useBudgetApi.ts";
 
-export default function useBudgets(month?: number, year?: number) {
+export default function useBudgetQuery(month?: number, year?: number) {
     const queryClient = useQueryClient();
     const { fetchBudgetByMonth, fetchBudgetVsActual, setMonthlyBudget } = useBudgetApi();
 
@@ -15,17 +15,27 @@ export default function useBudgets(month?: number, year?: number) {
     });
 
     const budgetVsActualQuery = useQuery({
-        queryKey: ['budgets', 'vs-actual', currentMonth, currentYear],
+        queryKey: ['budgets', 'budget-vs-actual', currentMonth, currentYear],
         queryFn: () => fetchBudgetVsActual(currentMonth, currentYear),
     });
 
     const setBudgetsMutation = useMutation({
         mutationFn: (budgets: { category: string, amount: number }[]) =>
             setMonthlyBudget(budgets, currentMonth, currentYear),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['budgets', 'month', currentMonth, currentYear] })
+        onSuccess: (data) => {
+            console.log('Mutation success, data:', data);
+            console.log('Current month/year:', currentMonth, currentYear);
+            console.log('Invalidating queries');
+
+            queryClient.invalidateQueries({
+                queryKey: ['budgets', 'month', currentMonth, currentYear]
+            })
+
+            queryClient.invalidateQueries({
+                queryKey: ['budgets', 'budget-vs-actual', currentMonth, currentYear]
+            });
         }
-    })
+    });
 
     return {
         // Budget Monthly

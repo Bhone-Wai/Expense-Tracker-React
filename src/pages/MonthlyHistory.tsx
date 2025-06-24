@@ -1,5 +1,5 @@
-import TabsLists from "@/components/tabs/TabsLists.tsx";
-import TabsWrapper from "@/components/tabs/TabsWrapper.tsx";
+import TabsLists from "@/components/layout/tabs/TabsLists.tsx";
+import TabsWrapper from "@/components/layout/tabs/TabsWrapper.tsx";
 
 export default function MonthlyHistory() {
     return (

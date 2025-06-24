@@ -1,10 +1,10 @@
-import TabsWrapper from "@/components/tabs/TabsWrapper.tsx";
+import TabsWrapper from "@/components/layout/tabs/TabsWrapper.tsx";
 import {TabsContent} from "@/components/ui/tabs.tsx";
-import {formatCurrency} from "@/lib/utils.ts";
+import {formatCurrencyTHB} from "@/lib/utils.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Target} from "lucide-react";
-import useBudgets from "@/hooks/useBudgets.ts";
-import CategoryBudgetCards from "@/components/CategoryBudgetCards.tsx";
+import useBudgetQuery from "@/hooks/queries/useBudgetQuery.ts";
+import BudgetCards from "@/components/budget/BudgetCards.tsx";
 
 interface BudgetOverviewProps {
     month?: number;
@@ -12,7 +12,7 @@ interface BudgetOverviewProps {
 }
 
 export default function BudgetOverview({ month, year }: BudgetOverviewProps) {
-    const { budgets, isLoadingBudget, budgetVsActual } = useBudgets(month, year);
+    const { budgets, isLoadingBudget, budgetVsActual } = useBudgetQuery(month, year);
 
     const budget = budgets || {
         totalBudget: 0
@@ -32,11 +32,11 @@ export default function BudgetOverview({ month, year }: BudgetOverviewProps) {
                             <Target className="h-4 w-4 text-blue-600" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-blue-600">{formatCurrency(budget.totalBudget)}</div>
+                            <div className="text-2xl font-bold text-blue-600">{formatCurrencyTHB(budget.totalBudget)}</div>
                         </CardContent>
                     </Card>
                     
-                    <CategoryBudgetCards currentBudget={budget} stats={stats} />
+                    {/*<BudgetCards currentBudget={budget} stats={stats} />*/}
                 </div>
             </TabsContent>
         </TabsWrapper>
@@ -174,4 +174,3 @@ export default function BudgetOverview({ month, year }: BudgetOverviewProps) {
         </Card>
     </div>
 </TabsContent>*/
-

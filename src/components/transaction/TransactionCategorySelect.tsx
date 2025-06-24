@@ -1,24 +1,24 @@
-import type {transactionType} from "@/types/transaction.ts";
 import {FormControl, FormItem, FormLabel} from "@/components/ui/form.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {expenseCategories, incomeCategories} from "@/constants/categories.ts";
+import {expenseCategoryMeta, incomeCategoryMeta} from "@/constants/categoryMeta.ts";
+import type {TransactionType} from "@/types/enums.ts";
 
 interface TransactionCategorySelectProps {
-    type: transactionType;
+    type: TransactionType;
     value: string;
-    onChange: (val: string) => void;
-    // error?: string;
+    onCategoryChange: (value: string) => void;
 }
 
-export default function TransactionCategorySelect({type, value, onChange, /*error*/}: TransactionCategorySelectProps) {
-    const currentCategories = type === 'INCOME' ? incomeCategories : expenseCategories;
+export default function TransactionCategorySelect({type, value, onCategoryChange}: TransactionCategorySelectProps) {
+    const currentCategories = type === 'INCOME' ? incomeCategoryMeta : expenseCategoryMeta;
+
     return (
         <FormItem>
             <FormLabel>Category</FormLabel>
             <FormControl>
                 <Select
                     value={value}
-                    onValueChange={onChange}
+                    onValueChange={onCategoryChange}
                 >
                     <SelectTrigger className={"w-full"}>
                         <SelectValue placeholder={'Select category'} />

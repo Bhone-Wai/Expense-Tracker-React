@@ -1,19 +1,20 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import type { transactionType} from "@/types/transaction.ts";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form} from "@/components/ui/form.tsx";
-import useTransactions from "@/hooks/useTransactions.ts";
+import useTransactionQuery from "@/hooks/queries/useTransactionQuery.ts";
 import {transactionSchema, type TransactionSchema} from "@/schemas/transactionSchema.ts";
 import {Loader2, Plus} from "lucide-react";
 import TransactionField from "@/components/transaction/TransactionField.tsx";
 import TransactionTypeToggle from "@/components/transaction/TransactionTypeToggle.tsx";
 import TransactionDate from "@/components/transaction/TransactionDate.tsx";
 import TransactionCategorySelect from "@/components/transaction/TransactionCategorySelect.tsx";
+import type {TransactionType} from "@/types/enums.ts";
+import {mergeDateWithCurrentTime} from "@/lib/utils.ts";
 
-export default function AddTransactionForm() {
-    const { createTransaction } = useTransactions();
+export default function TransactionForm() {
+    const { createTransaction, isCreating } = useTransactionQuery();
 
     const form = useForm<TransactionSchema>({
         resolver: zodResolver(transactionSchema),
@@ -26,8 +27,7 @@ export default function AddTransactionForm() {
         }
     });
 
-    const { watch, setValue, handleSubmit, control, reset, formState } = form;
-    const { isSubmitting, errors } = formState;
+    const { watch, setValue, handleSubmit, control, reset } = form;
 
     const watchedType = watch("type");
     const watchedIncomeCategory = watch("incomeCategory");
@@ -36,7 +36,7 @@ export default function AddTransactionForm() {
     const getCurrentCategory = () =>
         watchedType === 'INCOME' ? watchedIncomeCategory || '' : watchedExpenseCategory || '';
 
-    const handleTypeChange = (newType: transactionType) => {
+    const handleTypeChange = (newType: TransactionType) => {
         setValue("type", newType);
 
         // Reset categories when switching types
@@ -50,18 +50,11 @@ export default function AddTransactionForm() {
     };
 
     const onSubmit = async (data: TransactionSchema) => {
-        const dateWithCurrentTime = new Date(); // Current date/time
-        const selectedDate = new Date(data.date); // Selected date at midnight
+        const formattedDate = mergeDateWithCurrentTime(data.date);
 
-        // Set the selected date but keep current time
-        dateWithCurrentTime.setFullYear(selectedDate.getFullYear());
-        dateWithCurrentTime.setMonth(selectedDate.getMonth());
-        dateWithCurrentTime.setDate(selectedDate.getDate());
-
-        // Create transaction using the API
         await createTransaction({
             ...data,
-            date: dateWithCurrentTime.toISOString(),
+            date: formattedDate.toISOString(),
         });
 
         reset({
@@ -92,17 +85,26 @@ export default function AddTransactionForm() {
                             <TransactionCategorySelect
                                 type={watchedType}
                                 value={getCurrentCategory()}
-                                onChange={(val) =>
+                                onCategoryChange={(value) =>
                                     watchedType === 'INCOME'
-                                    ? setValue("incomeCategory", val as any)
-                                    : setValue("expenseCategory", val as any)
+                                    ? setValue("incomeCategory", value as any)
+                                    : setValue("expenseCategory", value as any)
                                 }
                             />
                         </div>
 
-                        <Button type="submit" className="w-full" disabled={isSubmitting}>
-                            <Plus className="h-4 w-4 mr-2" />
-                            {isSubmitting ? <Loader2 className="h-6 w-6 animate-spin" /> : "Add Transaction"}
+                        <Button type="submit" className="w-full" disabled={isCreating}>
+                            {isCreating ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Creating...
+                                </>
+                            ) : (
+                                <>
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add Transaction
+                                </>
+                            )}
                         </Button>
                     </form>
                 </Form>

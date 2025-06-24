@@ -1,7 +1,7 @@
 import {Calendar} from "lucide-react";
 import {SignedIn, SignedOut, SignInButton, useAuth, UserButton} from "@clerk/clerk-react";
-import MonthNavigator from "@/components/header/MonthNavigator.tsx";
-import BudgetDialog from "@/components/header/BudgetDialog.tsx";
+import MonthNavigator from "@/components/layout/header/MonthNavigator.tsx";
+import BudgetDialog from "@/components/layout/header/BudgetDialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useEffect} from "react";
 

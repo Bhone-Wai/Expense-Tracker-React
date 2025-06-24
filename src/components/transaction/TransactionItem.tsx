@@ -1,45 +1,23 @@
-import type {transactionType} from "@/types/transaction.ts";
 import {Trash2} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {expenseCategories, incomeCategories} from "@/constants/categories.ts";
+import type {Transaction} from "@/types/transaction.ts";
+import {formatCurrencyTHB, getCategoryMeta} from "@/lib/utils.ts";
 
 interface TransactionItemProps {
-    transaction: {
-        id: string,
-        title: string,
-        amount: number,
-        type: transactionType,
-        incomeCategory?: string,
-        expenseCategory?: string,
-    };
-    onDelete?: (id: string) => void;
+    transaction: Transaction;
+    onTransactionDelete?: (id: string) => void;
+    isDeleting?: boolean;
 }
 
-// Category colors mapping
-const categoryColors: Record<string, string> = {
-    // Income categories
-    'SALARY': 'border-green-200 text-green-700 bg-green-50',
-    'FREELANCE': 'border-green-200 text-green-700 bg-green-50',
-    'BONUS': 'border-green-200 text-green-700 bg-green-50',
-    'INVESTMENT': 'border-green-200 text-green-700 bg-green-50',
-
-    // Expense categories
-    'NEEDS': 'border-blue-200 text-blue-700 bg-blue-50',
-    'WANTS': 'border-purple-200 text-purple-700 bg-purple-50',
-    'SAVINGS': 'border-green-200 text-green-700 bg-green-50',
-}
-
-export default function TransactionItem({ transaction, onDelete }: TransactionItemProps) {
+export default function TransactionItem({ transaction, onTransactionDelete }: TransactionItemProps) {
     // Get the appropriate category value
     const categoryValue = transaction.type === 'INCOME' ? transaction.incomeCategory : transaction.expenseCategory;
 
-    // Find the category configuration
-    const currentCategories = transaction.type === 'INCOME' ? incomeCategories : expenseCategories;
-    const categoryConfig = currentCategories.find(cat => cat.value === categoryValue);
+    const categoryInfo = getCategoryMeta(transaction.type, categoryValue);
 
     // Get the icon component
-    const IconComponent = categoryConfig?.icon;
+    const IconComponent = categoryInfo?.icon;
 
     return (
         <div className={'flex items-center justify-between p-3 rounded-lg border bg-white hover:bg-gray-50 transition-colors'}>
@@ -52,8 +30,8 @@ export default function TransactionItem({ transaction, onDelete }: TransactionIt
                 <div>
                     <p className={'font-medium text-gray-900'}>{transaction.title}</p>
                     {categoryValue && (
-                        <Badge className={categoryColors[categoryValue]} variant="outline">
-                            {categoryConfig?.label || categoryValue}
+                        <Badge className={categoryInfo?.style} variant="outline">
+                            {categoryInfo?.label || categoryValue}
                         </Badge>
                     )}
                 </div>
@@ -61,13 +39,13 @@ export default function TransactionItem({ transaction, onDelete }: TransactionIt
             <div className={'flex items-center gap-2'}>
                 <span className={`font-semibold ${transaction.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
                     {transaction.type === 'INCOME' ? '+' : '-'}
-                    ฿{transaction.amount}.00
+                    {formatCurrencyTHB(transaction.amount)}
                 </span>
-                {onDelete && (
+                {onTransactionDelete && (
                     <Button
                         variant={'ghost'}
                         size={"sm"}
-                        onClick={() => onDelete(transaction.id)}
+                        onClick={() => onTransactionDelete(transaction.id)}
                         className={'text-gray-400 hover:text-red-600'}
                     >
                         <Trash2 className={'h-4 w-4'} />

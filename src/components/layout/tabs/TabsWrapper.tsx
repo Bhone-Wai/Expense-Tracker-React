@@ -1,7 +1,7 @@
 import {Tabs} from "@/components/ui/tabs.tsx";
 import type {ReactNode} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import TabsLists from "@/components/tabs/TabsLists.tsx";
+import TabsLists from "@/components/layout/tabs/TabsLists.tsx";
 
 const routeToTab: Record<string, string> = {
     '/': 'transactions',

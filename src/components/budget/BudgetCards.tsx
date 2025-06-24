@@ -1,6 +1,6 @@
-import {expenseCategories, incomeCategories} from "@/constants/categories.ts";
+import {expenseCategoryMeta, incomeCategoryMeta} from "@/constants/categoryMeta.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {formatCurrency} from "@/lib/utils.ts";
+import {formatCurrencyTHB} from "@/lib/utils.ts";
 
 interface CategoryBudgetCardsProps {
     currentBudget: {
@@ -16,7 +16,7 @@ interface CategoryBudgetCardsProps {
 
 // Get category info from constants
 const getCategoryInfo = (categoryValue: string) => {
-    const allCategories = [...incomeCategories, ...expenseCategories];
+    const allCategories = [...incomeCategoryMeta, ...expenseCategoryMeta];
     const categoryInfo = allCategories.find(cat => cat.value === categoryValue);
 
     return {
@@ -25,7 +25,7 @@ const getCategoryInfo = (categoryValue: string) => {
     };
 };
 
-export default function CategoryBudgetCards({ currentBudget, stats }: CategoryBudgetCardsProps) {
+export default function BudgetCards({ currentBudget, stats }: CategoryBudgetCardsProps) {
     return (
         <>
             {Object.entries(currentBudget)
@@ -44,11 +44,11 @@ export default function CategoryBudgetCards({ currentBudget, stats }: CategoryBu
                                 {CategoryIcon && <CategoryIcon className="h-4 w-4 text-gray-600" />}
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">{formatCurrency(amount)}</div>
+                                <div className="text-2xl font-bold">{formatCurrencyTHB(amount)}</div>
                                 <p className={`text-xs ${remaining >= 0 ? "text-green-600" : "text-red-600"}`}>
                                     {remaining >= 0
-                                        ? `${formatCurrency(remaining)} remaining`
-                                        : `Over by ${formatCurrency(Math.abs(remaining))}`}
+                                        ? `${formatCurrencyTHB(remaining)} remaining`
+                                        : `Over by ${formatCurrencyTHB(Math.abs(remaining))}`}
                                 </p>
                             </CardContent>
                         </Card>

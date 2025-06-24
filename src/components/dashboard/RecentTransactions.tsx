@@ -1,21 +1,19 @@
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowRight, DollarSign, List, Loader2} from "lucide-react";
+import {ArrowRight, DollarSign, List} from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import TransactionItem from "@/components/transaction/TransactionItem.tsx";
-import useTransactions from "@/hooks/useTransactions.ts";
-import {Skeleton} from "@/components/ui/skeleton.tsx";
+import useTransactionQuery from "@/hooks/queries/useTransactionQuery.ts";
+import {TransactionSkeleton} from "@/components/common/SkeletonLoader.tsx";
 
 export default function RecentTransactions() {
     const navigate = useNavigate();
     const {
         recentTransactions,
         isLoadingRecent,
-        isErrorRecent,
-        errorRecent,
         deleteTransaction,
         isDeleting
-    } = useTransactions();
+    } = useTransactionQuery();
 
     const handleViewAll = () => {
         navigate('/transactions');
@@ -27,44 +25,7 @@ export default function RecentTransactions() {
 
     if (isLoadingRecent) {
         return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className={'text-2xl font-semibold'}>Recent Transactions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {/* Simple skeleton items */}
-                    {[1, 2, 3, 4].map((item) => (
-                        <div key={item} className="flex items-center justify-between p-3 rounded-lg border">
-                            <div className="flex items-center gap-3">
-                                <Skeleton className="h-8 w-8 rounded-full" />
-                                <div className="space-y-2">
-                                    <Skeleton className="h-4 w-32" />
-                                    <Skeleton className="h-3 w-20" />
-                                </div>
-                            </div>
-                            <Skeleton className="h-5 w-16" />
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (isErrorRecent) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>Recent Transactions</CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center py-8">
-                    <div className="text-center">
-                        <p className="text-red-600 mb-2">Failed to load transactions</p>
-                        <p className="text-sm text-gray-500">
-                            {errorRecent?.message || 'Something went wrong'}
-                        </p>
-                    </div>
-                </CardContent>
-            </Card>
+            <TransactionSkeleton title={'Recent Transactions'} />
         );
     }
 
@@ -87,7 +48,7 @@ export default function RecentTransactions() {
                         <TransactionItem
                             key={transaction.id}
                             transaction={transaction}
-                            onDelete={() => handleDelete(transaction.id)}
+                            onTransactionDelete={() => handleDelete(transaction.id)}
                             isDeleting={isDeleting}
                         />
                     ))
@@ -103,6 +64,7 @@ export default function RecentTransactions() {
                     variant="outline"
                     className="w-full text-blue-600 border-blue-200 hover:bg-blue-50"
                     onClick={handleViewAll}
+                    aria-label="View all transactions"
                 >
                     <List className="mr-2 h-4 w-4" />
                     View All Transactions
