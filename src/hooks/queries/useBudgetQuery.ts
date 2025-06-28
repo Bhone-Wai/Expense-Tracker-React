@@ -15,7 +15,7 @@ export default function useBudgetQuery(month?: number, year?: number) {
     });
 
     const budgetVsActualQuery = useQuery({
-        queryKey: ['budgets', 'budget-vs-actual', currentMonth, currentYear],
+        queryKey: ['budgets', 'budget_overview-vs-actual', currentMonth, currentYear],
         queryFn: () => fetchBudgetVsActual(currentMonth, currentYear),
     });
 
@@ -32,7 +32,7 @@ export default function useBudgetQuery(month?: number, year?: number) {
             })
 
             queryClient.invalidateQueries({
-                queryKey: ['budgets', 'budget-vs-actual', currentMonth, currentYear]
+                queryKey: ['budgets', 'budget_overview-vs-actual', currentMonth, currentYear]
             });
         }
     });

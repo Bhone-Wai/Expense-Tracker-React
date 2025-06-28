@@ -33,7 +33,6 @@ export function TransactionSkeleton({title, lines = 4}: TransactionSkeletonProps
                 <CardTitle className={'text-2xl font-semibold'}>{title}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                {/* Simple skeleton items */}
                 {Array.from({ length: lines }).map((_, index) => (
                     <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
                         <div className="flex items-center gap-3">
@@ -49,4 +48,28 @@ export function TransactionSkeleton({title, lines = 4}: TransactionSkeletonProps
             </CardContent>
         </Card>
     )
+}
+
+interface BudgetCardSkeletonProps {
+    title?: string;
+    showIcon?: boolean;
+    lines?: number;
+}
+
+export function BudgetCardSkeleton({ title = "Loading...", showIcon = true, lines = 1 }: BudgetCardSkeletonProps) {
+    return (
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-gray-400">
+                    {title}
+                </CardTitle>
+                {showIcon && <Skeleton className="h-4 w-4 rounded-full" />}
+            </CardHeader>
+            <CardContent className="space-y-2">
+                {Array.from({ length: lines }).map((_, index) => (
+                    <Skeleton key={index} className="h-6 w-3/4" />
+                ))}
+            </CardContent>
+        </Card>
+    );
 }

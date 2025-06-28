@@ -12,7 +12,7 @@ import {format} from "date-fns";
 import {useEffect, useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
 import useBudgetForm from "@/hooks/forms/useBudgetForm.ts";
-import BudgetField from "@/components/budget/BudgetField.tsx";
+import BudgetField from "@/components/budget_overview/BudgetField.tsx";
 import {formatCurrencyTHB, getCategoryMeta} from "@/lib/utils.ts";
 import {EXPENSE_CATEGORIES} from "@/types/enums.ts";
 
@@ -40,7 +40,7 @@ export default function BudgetDialog() {
             <DialogTrigger asChild>
                 <Button variant={"outline"}>
                     <Settings className={'h-4 w-4 mr-2'} />
-                    Budget Plan
+                    Budget Setting
                 </Button>
             </DialogTrigger>
             <DialogContent>
