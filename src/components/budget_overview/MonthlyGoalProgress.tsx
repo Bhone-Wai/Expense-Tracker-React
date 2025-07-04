@@ -5,42 +5,22 @@ import type {BudgetVsActual} from "@/types/budget.ts";
 import {formatCurrencyTHB} from "@/lib/utils.ts";
 
 interface MonthlyGoalProgressProps {
-    budget: BudgetVsActual[];
-    currentBudget: {
-        totalBudget: number;
-        NEEDS: number;
-        WANTS: number;
-        SAVINGS: number;
-    };
+    budgetVsActual: BudgetVsActual[];
+    totalBudget: number;
 }
 
-export default function MonthlyGoalProgress({ budget, currentBudget }: MonthlyGoalProgressProps) {
-    const totalSpent = budget.reduce((sum, item) => sum + item.actual, 0);
+export default function MonthlyGoalProgress({ budgetVsActual, totalBudget }: MonthlyGoalProgressProps) {
+    const totalSpent = budgetVsActual.reduce((sum, item) => sum + item.actual, 0);
 
-    const categoryTotals = budget.reduce(
-        (acc, item) => ({
-            ...acc,
-            [item.category]: item.actual,
-        }),
-        {
-            NEEDS: 0,
-            WANTS: 0,
-            SAVINGS: 0,
-        }
-    );
+    const progress = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
-    const progressValue =
-        currentBudget.totalBudget > 0
-            ? (totalSpent / currentBudget.totalBudget) * 100
-            : 0;
-
-    const remaining = currentBudget.totalBudget - totalSpent;
+    const remaining = budgetVsActual.reduce((sum, item) => sum + item.remaining, 0);
     const isOver = remaining < 0;
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle className={'text-2xl'}>Monthly Goal Progress</CardTitle>
+                <CardTitle className={'text-2xl font-semibold'}>Monthly Goal Progress</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
                 {/* Total Spent */}
@@ -55,9 +35,9 @@ export default function MonthlyGoalProgress({ budget, currentBudget }: MonthlyGo
                 <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                         <span>Monthly Budget</span>
-                        <span>{formatCurrencyTHB(currentBudget.totalBudget)}</span>
+                        <span>{formatCurrencyTHB(totalBudget)}</span>
                     </div>
-                    <Progress value={progressValue} className="h-4" />
+                    <Progress value={progress} className="h-4" />
                     <div className="text-center text-sm text-gray-600">
                         {isOver
                             ? `Over budget by ${formatCurrencyTHB(Math.abs(remaining))}`
@@ -75,12 +55,6 @@ export default function MonthlyGoalProgress({ budget, currentBudget }: MonthlyGo
                             <p className="text-red-600">• Consider reducing spending in overspent categories</p>
                         ) : (
                             <p className="text-green-600">• You're on track with your budget goals!</p>
-                        )}
-                        {categoryTotals.WANTS > currentBudget.WANTS && (
-                            <p className="text-orange-600">• Want category is over budget</p>
-                        )}
-                        {categoryTotals.SAVINGS < currentBudget.SAVINGS && (
-                            <p className="text-blue-600">• Consider increasing your savings</p>
                         )}
                     </div>
                 </div>

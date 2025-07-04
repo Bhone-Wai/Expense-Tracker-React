@@ -1,296 +1,167 @@
 import TabsWrapper from "@/components/layout/tabs/TabsWrapper.tsx";
+import MonthlyFinancialSummary from "@/components/monthly_history/MonthlyFinancialSummary.tsx";
 
 export default function MonthlyHistory() {
     return (
         <TabsWrapper>
-            Monthly History
+            <MonthlyFinancialSummary />
         </TabsWrapper>
     );
 }
 
 /*
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {historicalData.map((monthData) => (
-        <Card
-            key={monthData.month}
-            className={`relative overflow-hidden transition-all hover:shadow-lg cursor-pointer ${
-                monthData.month === selectedMonth ? "ring-2 ring-blue-500 bg-blue-50/50" : ""
-            }`}
-            onClick={() => setSelectedMonth(monthData.month)}
-        >
-            {/!* Status Indicator *!/}
-            <div className="absolute top-4 right-4">
-                {monthData.isOverBudget ? (
-                    <AlertCircle className="h-5 w-5 text-red-500" />
-                ) : (
-                    <CheckCircle className="h-5 w-5 text-green-500" />
-                )}
+<Card className="border border-gray-200 shadow-sm rounded-lg">
+    <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+            <CardTitle className="text-lg font-medium text-gray-900">Monthly Timeline</CardTitle>
+            <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="text-gray-600 border-gray-300 bg-transparent">
+                    Last 6 months
+                </Button>
+                <Button variant="outline" size="sm" className="text-gray-600 border-gray-300 bg-transparent">
+                    Export
+                </Button>
             </div>
-
-            <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{monthData.monthName}</CardTitle>
-                    <Badge variant={monthData.isOverBudget ? "destructive" : "default"} className="text-xs">
-                        {Math.round(monthData.budgetUtilization)}%
-                    </Badge>
-                </div>
-                <p className="text-sm text-gray-600">{monthData.transactionCount} transactions</p>
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-                {/!* Financial Summary *!/}
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                            <TrendingUp className="h-4 w-4 text-green-600" />
-                            <span className="text-xs font-medium text-green-700">Income</span>
-                        </div>
-                        <p className="text-lg font-bold text-green-600">{formatCurrency(monthData.income)}</p>
-                    </div>
-                    <div className="text-center p-3 bg-red-50 rounded-lg">
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                            <TrendingDown className="h-4 w-4 text-red-600" />
-                            <span className="text-xs font-medium text-red-700">Expenses</span>
-                        </div>
-                        <p className="text-lg font-bold text-red-600">{formatCurrency(monthData.expenses)}</p>
-                    </div>
-                </div>
-
-                {/!* Net Income *!/}
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                        <Activity className="h-4 w-4 text-gray-600" />
-                        <span className="text-xs font-medium text-gray-700">Net Income</span>
-                    </div>
-                    <p
-                        className={`text-lg font-bold ${monthData.netIncome >= 0 ? "text-green-600" : "text-red-600"}`}
-                    >
-                        {formatCurrency(monthData.netIncome)}
-                    </p>
-                </div>
-
-                {/!* Budget Progress *!/}
-                <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Budget Usage</span>
-                        <span className="font-medium">{formatCurrency(monthData.budget.totalBudget)}</span>
-                    </div>
-                    <Progress value={Math.min(monthData.budgetUtilization, 100)} className="h-2" />
-                    {monthData.isOverBudget && (
-                        <p className="text-xs text-red-600 font-medium">
-                            Over by {formatCurrency(monthData.expenses - monthData.budget.totalBudget)}
-                        </p>
-                    )}
-                </div>
-
-                {/!* Category Mini Breakdown *!/}
-                <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-gray-700">Top Categories</h4>
-                    <div className="space-y-1">
-                        {Object.entries(monthData.categoryTotals)
-                            .sort(([, a], [, b]) => b - a)
-                            .slice(0, 3)
-                            .map(([category, amount]) => {
-                                const CategoryIcon = categoryIcons[category as ExpenseCategory]
-                                return (
-                                    <div key={category} className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <CategoryIcon className="h-3 w-3 text-gray-500" />
-                                            <span className="text-gray-600">{category}</span>
-                                        </div>
-                                        <span className="font-medium">{formatCurrency(amount)}</span>
-                                    </div>
-                                )
-                            })}
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    ))}
-</div>*/
-
-
-/*
-<Card>
-    <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Historical Summary
-        </CardTitle>
+        </div>
     </CardHeader>
     <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-700 font-medium">Total Months</p>
-                <p className="text-2xl font-bold text-blue-600">{historicalData.length}</p>
+        <div className="space-y-6">
+            {/!* June 2025 *!/}
+            <div className="relative">
+                <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                        <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                        <div className="w-px h-16 bg-gray-200 mt-2"></div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2">
+                            <div>
+                                <h3 className="text-base font-medium text-gray-900">June 2025</h3>
+                                <p className="text-sm text-gray-600">Current month • 13 transactions</p>
+                            </div>
+                            <Badge className="bg-green-50 text-green-700 border-green-200">Active</Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Income</p>
+                                <p className="text-lg font-semibold text-green-600">₦13,400</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Expenses</p>
+                                <p className="text-lg font-semibold text-red-600">₦2,290</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Net</p>
+                                <p className="text-lg font-semibold text-gray-900">₦11,110</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-                <p className="text-sm text-green-700 font-medium">Avg Income</p>
-                <p className="text-2xl font-bold text-green-600">
-                    {formatCurrency(
-                        historicalData.reduce((sum, month) => sum + month.income, 0) / historicalData.length || 0,
-                    )}
-                </p>
+
+            {/!* May 2025 *!/}
+            <div className="relative">
+                <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                        <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                        <div className="w-px h-16 bg-gray-200 mt-2"></div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2">
+                            <div>
+                                <h3 className="text-base font-medium text-gray-900">May 2025</h3>
+                                <p className="text-sm text-gray-600">Previous month • 18 transactions</p>
+                            </div>
+                            <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                Completed
+                            </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Income</p>
+                                <p className="text-lg font-semibold text-green-600">₦12,800</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Expenses</p>
+                                <p className="text-lg font-semibold text-red-600">₦3,450</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Net</p>
+                                <p className="text-lg font-semibold text-gray-900">₦9,350</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="text-center p-4 bg-red-50 rounded-lg">
-                <p className="text-sm text-red-700 font-medium">Avg Expenses</p>
-                <p className="text-2xl font-bold text-red-600">
-                    {formatCurrency(
-                        historicalData.reduce((sum, month) => sum + month.expenses, 0) / historicalData.length || 0,
-                    )}
-                </p>
+
+            {/!* April 2025 *!/}
+            <div className="relative">
+                <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                        <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                        <div className="w-px h-16 bg-gray-200 mt-2"></div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2">
+                            <div>
+                                <h3 className="text-base font-medium text-gray-900">April 2025</h3>
+                                <p className="text-sm text-gray-600">2 months ago • 22 transactions</p>
+                            </div>
+                            <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                Completed
+                            </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Income</p>
+                                <p className="text-lg font-semibold text-green-600">₦15,200</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Expenses</p>
+                                <p className="text-lg font-semibold text-red-600">₦4,100</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Net</p>
+                                <p className="text-lg font-semibold text-gray-900">₦11,100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <p className="text-sm text-purple-700 font-medium">Months On Budget</p>
-                <p className="text-2xl font-bold text-purple-600">
-                    {historicalData.filter((month) => !month.isOverBudget).length}
-                </p>
+
+            {/!* March 2025 *!/}
+            <div className="relative">
+                <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                        <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2">
+                            <div>
+                                <h3 className="text-base font-medium text-gray-900">March 2025</h3>
+                                <p className="text-sm text-gray-600">3 months ago • 15 transactions</p>
+                            </div>
+                            <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                Completed
+                            </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Income</p>
+                                <p className="text-lg font-semibold text-green-600">₦11,900</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Expenses</p>
+                                <p className="text-lg font-semibold text-red-600">₦2,800</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                                <p className="text-xs text-gray-600 mb-1">Net</p>
+                                <p className="text-lg font-semibold text-gray-900">₦9,100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </CardContent>
 </Card>*/
-
-
-/*
-<TabsContent value="history" className="space-y-6">
-    {/!* Monthly History Overview with New Design *!/}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {historicalData.map((monthData) => (
-            <Card
-                key={monthData.month}
-                className={`relative overflow-hidden transition-all hover:shadow-lg cursor-pointer ${
-                    monthData.month === selectedMonth ? "ring-2 ring-blue-500 bg-blue-50/50" : ""
-                }`}
-                onClick={() => setSelectedMonth(monthData.month)}
-            >
-                {/!* Status Indicator *!/}
-                <div className="absolute top-4 right-4">
-                    {monthData.isOverBudget ? (
-                        <AlertCircle className="h-5 w-5 text-red-500" />
-                    ) : (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                    )}
-                </div>
-
-                <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">{monthData.monthName}</CardTitle>
-                        <Badge variant={monthData.isOverBudget ? "destructive" : "default"} className="text-xs">
-                            {Math.round(monthData.budgetUtilization)}%
-                        </Badge>
-                    </div>
-                    <p className="text-sm text-gray-600">{monthData.transactionCount} transactions</p>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                    {/!* Financial Summary *!/}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-3 bg-green-50 rounded-lg">
-                            <div className="flex items-center justify-center gap-1 mb-1">
-                                <TrendingUp className="h-4 w-4 text-green-600" />
-                                <span className="text-xs font-medium text-green-700">Income</span>
-                            </div>
-                            <p className="text-lg font-bold text-green-600">{formatCurrency(monthData.income)}</p>
-                        </div>
-                        <div className="text-center p-3 bg-red-50 rounded-lg">
-                            <div className="flex items-center justify-center gap-1 mb-1">
-                                <TrendingDown className="h-4 w-4 text-red-600" />
-                                <span className="text-xs font-medium text-red-700">Expenses</span>
-                            </div>
-                            <p className="text-lg font-bold text-red-600">{formatCurrency(monthData.expenses)}</p>
-                        </div>
-                    </div>
-
-                    {/!* Net Income *!/}
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                            <Activity className="h-4 w-4 text-gray-600" />
-                            <span className="text-xs font-medium text-gray-700">Net Income</span>
-                        </div>
-                        <p
-                            className={`text-lg font-bold ${monthData.netIncome >= 0 ? "text-green-600" : "text-red-600"}`}
-                        >
-                            {formatCurrency(monthData.netIncome)}
-                        </p>
-                    </div>
-
-                    {/!* Budget Progress *!/}
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Budget Usage</span>
-                            <span className="font-medium">{formatCurrency(monthData.budget.totalBudget)}</span>
-                        </div>
-                        <Progress value={Math.min(monthData.budgetUtilization, 100)} className="h-2" />
-                        {monthData.isOverBudget && (
-                            <p className="text-xs text-red-600 font-medium">
-                                Over by {formatCurrency(monthData.expenses - monthData.budget.totalBudget)}
-                            </p>
-                        )}
-                    </div>
-
-                    {/!* Category Mini Breakdown *!/}
-                    <div className="space-y-2">
-                        <h4 className="text-sm font-medium text-gray-700">Top Categories</h4>
-                        <div className="space-y-1">
-                            {Object.entries(monthData.categoryTotals)
-                                .sort(([, a], [, b]) => b - a)
-                                .slice(0, 3)
-                                .map(([category, amount]) => {
-                                    const CategoryIcon = categoryIcons[category as ExpenseCategory]
-                                    return (
-                                        <div key={category} className="flex items-center justify-between text-sm">
-                                            <div className="flex items-center gap-2">
-                                                <CategoryIcon className="h-3 w-3 text-gray-500" />
-                                                <span className="text-gray-600">{category}</span>
-                                            </div>
-                                            <span className="font-medium">{formatCurrency(amount)}</span>
-                                        </div>
-                                    )
-                                })}
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        ))}
-    </div>
-
-    {/!* Historical Summary *!/}
-    <Card>
-        <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Historical Summary
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-blue-700 font-medium">Total Months</p>
-                    <p className="text-2xl font-bold text-blue-600">{historicalData.length}</p>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <p className="text-sm text-green-700 font-medium">Avg Income</p>
-                    <p className="text-2xl font-bold text-green-600">
-                        {formatCurrency(
-                            historicalData.reduce((sum, month) => sum + month.income, 0) / historicalData.length || 0,
-                        )}
-                    </p>
-                </div>
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                    <p className="text-sm text-red-700 font-medium">Avg Expenses</p>
-                    <p className="text-2xl font-bold text-red-600">
-                        {formatCurrency(
-                            historicalData.reduce((sum, month) => sum + month.expenses, 0) / historicalData.length || 0,
-                        )}
-                    </p>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <p className="text-sm text-purple-700 font-medium">Months On Budget</p>
-                    <p className="text-2xl font-bold text-purple-600">
-                        {historicalData.filter((month) => !month.isOverBudget).length}
-                    </p>
-                </div>
-            </div>
-        </CardContent>
-    </Card>
-</TabsContent>*/

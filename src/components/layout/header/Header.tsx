@@ -17,7 +17,7 @@ export default function Header() {
     }, [isSignedIn]);
 
     return (
-        <header className={'bg-white border-b border-gray-200 px-4 py-4'}>
+        <header className={'bg-background border-b border-gray-200 text-foreground px-4 py-4'}>
             <div className={'max-w-7xl mx-auto flex items-center justify-between'}>
                 {/* Left Side: Logo + Month Navigator */}
                 <div className="flex items-center gap-3">

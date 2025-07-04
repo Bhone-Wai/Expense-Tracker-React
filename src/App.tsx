@@ -1,3 +1,4 @@
+import './App.css'
 import {ClerkProvider} from "@clerk/clerk-react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -14,7 +15,7 @@ export default function App() {
     return (
         <div>
             <ClerkProvider publishableKey={clerkPubKey}>
-                <QueryClientProvider client={queryClient} >
+                <QueryClientProvider client={queryClient}>
                     <BrowserRouter>
                         <Routes>
                             <Route element={<RootLayout />}>

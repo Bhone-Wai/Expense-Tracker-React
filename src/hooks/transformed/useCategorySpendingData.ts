@@ -34,7 +34,7 @@ function transformSingleBudgetItem(budget: BudgetVsActual) {
 
 // Low-level helper functions
 function formatCategoryLabel(label?: string) {
-    return label?.toUpperCase() ?? '';
+    return label?.toUpperCase();
 }
 
 function calculateOverBudgetStatus(budget: BudgetVsActual) {

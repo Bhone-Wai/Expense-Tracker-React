@@ -3,7 +3,7 @@ import Header from "@/components/layout/header/Header.tsx";
 
 export default function RootLayout() {
     return (
-        <div className={'min-h-screen bg-gray-50'}>
+        <div className={'min-h-screen bg-background text-foreground'}>
             <Header />
             <main className={'max-w-7xl mx-auto p-4'}>
                 <Outlet />
