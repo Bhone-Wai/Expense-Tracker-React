@@ -46,7 +46,7 @@ export default function BudgetVsActualSpending({budgetVsActual, isLoading}: Budg
                     <SpendingItem
                         key={item.category}
                         data={{
-                            title: item.label,
+                            title: item.label ?? '',
                             icon: item.icon && <item.icon className={'h-5 w-5'} />,
                             actual: item.actual,
                             budget: item.budgeted,

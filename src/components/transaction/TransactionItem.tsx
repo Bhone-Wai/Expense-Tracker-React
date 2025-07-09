@@ -7,9 +7,10 @@ import {formatCurrencyTHB, getCategoryMeta} from "@/lib/utils.ts";
 interface TransactionItemProps {
     transaction: Transaction;
     onTransactionDelete?: (id: string) => void;
+    isDeleting?: boolean;
 }
 
-export default function TransactionItem({ transaction, onTransactionDelete }: TransactionItemProps) {
+export default function TransactionItem({ transaction, onTransactionDelete, isDeleting }: TransactionItemProps) {
     // Get the appropriate category value
     const categoryValue = transaction.type === 'INCOME' ? transaction.incomeCategory : transaction.expenseCategory;
 
@@ -46,6 +47,7 @@ export default function TransactionItem({ transaction, onTransactionDelete }: Tr
                         size={"sm"}
                         onClick={() => onTransactionDelete(transaction.id)}
                         className={'text-gray-400 hover:text-red-600'}
+                        disabled={isDeleting}
                     >
                         <Trash2 className={'h-4 w-4'} />
                     </Button>

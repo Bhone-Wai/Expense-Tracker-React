@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {transactionSchema, type TransactionSchema} from "@/schemas/transactionSchema.ts";
 import useTransactionQuery from "@/hooks/queries/useTransactionQuery.ts";
-import type {TransactionType} from "@/types/enums.ts";
+import type {ExpenseCategory, IncomeCategory, TransactionType} from "@/types/enums.ts";
 import {mergeDateWithCurrentTime} from "@/lib/utils.ts";
 import {useAuth, useClerk} from "@clerk/clerk-react";
 
@@ -45,9 +45,9 @@ export default function useTransactionForm() {
 
     const handleCategoryChange = (value: string) => {
         if (watchedType === 'INCOME') {
-            setValue("incomeCategory", value as INCOME_CATEGORIES);
+            setValue("incomeCategory", value as IncomeCategory);
         } else {
-            setValue("expenseCategory", value as EXPENSE_CATEGORIES);
+            setValue("expenseCategory", value as ExpenseCategory);
         }
     }
 

@@ -28,7 +28,7 @@ export default function CategorySpending({ month, year }: CategorySpendingProps)
                     <SpendingItem
                         key={item.category}
                         data={{
-                            title: item.label,
+                            title: item.label ?? '',
                             icon: item.icon && <item.icon className="h-4 w-4" />,
                             actual: item.actual,
                             budget: item.budgeted,

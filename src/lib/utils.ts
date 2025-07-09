@@ -48,7 +48,7 @@ export const formatTransactionDate = (dateString: string): string => {
 
 export const groupTransactionsByDate = (transactions: Transaction[]) => {
   const grouped = transactions.reduce((acc: Record<string, Transaction[]>, tx) => {
-    const key = format(parseISO(tx.date), 'yyyy-MM-dd'); // Use a consistent format for the key
+    const key = format(typeof tx.date === 'string' ? parseISO(tx.date) : tx.date, 'yyyy-MM-dd'); // Use a consistent format for the key
     if (!acc[key]) acc[key] = [];
     acc[key].push(tx);
     return acc;

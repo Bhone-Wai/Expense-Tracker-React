@@ -27,7 +27,7 @@ export default function useBudgetQuery(month?: number, year?: number) {
     const setBudgetsMutation = useMutation({
         mutationFn: (budgets: { category: string, amount: number }[]) =>
             setMonthlyBudget(budgets, currentMonth, currentYear),
-        onSuccess: (data) => {
+        onSuccess: (_data) => {
             queryClient.invalidateQueries({
                 queryKey: ['budgets', 'month', currentMonth, currentYear, userId]
             })
