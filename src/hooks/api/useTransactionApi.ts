@@ -29,12 +29,9 @@ export const useTransactionApi = () => {
     }
 
     const createTransaction = async (data: Partial<Transaction>) => {
-        const [res] = await Promise.all([
-            api.post('/transactions', data, {
-                headers: await getAuthHeaders(),
-            }),
-            new Promise(resolve => setTimeout(resolve, 1000))
-        ]);
+        const res = await api.post('/transactions', data, {
+            headers: await getAuthHeaders(),
+        });
 
         return res.data;
     }

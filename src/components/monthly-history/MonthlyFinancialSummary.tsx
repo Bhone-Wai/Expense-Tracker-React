@@ -1,6 +1,6 @@
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import MonthlyFinancial from "@/components/monthly_history/MonthlyFinancial.tsx";
+import MonthlyFinancial from "@/components/monthly-history/MonthlyFinancial.tsx";
 
 export default function MonthlyFinancialSummary() {
     return (

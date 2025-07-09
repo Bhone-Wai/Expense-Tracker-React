@@ -1,4 +1,4 @@
-import type {Control, /*UseFormSetValue*/} from "react-hook-form";
+import type {Control} from "react-hook-form";
 import type {TransactionSchema} from "@/schemas/transactionSchema.ts";
 import {FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
 import {Toggle} from "@/components/ui/toggle.tsx";
@@ -7,11 +7,10 @@ import type {TransactionType} from "@/types/enums.ts";
 
 interface TransactionTypeToggleProps {
     control: Control<TransactionSchema>;
-    // setValue: UseFormSetValue<TransactionSchema>;
     onTypeChange: (type: TransactionType) => void;
 }
 
-export default function TransactionTypeToggle({control, /*setValue,*/ onTypeChange}: TransactionTypeToggleProps) {
+export default function TransactionTypeToggle({control, onTypeChange}: TransactionTypeToggleProps) {
     return (
         <FormField
             control={control}

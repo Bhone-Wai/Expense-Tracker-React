@@ -7,7 +7,6 @@ import {formatCurrencyTHB, getCategoryMeta} from "@/lib/utils.ts";
 interface TransactionItemProps {
     transaction: Transaction;
     onTransactionDelete?: (id: string) => void;
-    isDeleting?: boolean;
 }
 
 export default function TransactionItem({ transaction, onTransactionDelete }: TransactionItemProps) {

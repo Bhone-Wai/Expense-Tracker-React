@@ -4,15 +4,15 @@ import {DollarSign, List, Plus} from "lucide-react";
 import TransactionItem from "@/components/transaction/TransactionItem.tsx";
 import {useNavigate} from "react-router-dom";
 import useTransactionQuery from "@/hooks/queries/useTransactionQuery.ts";
-import {useEffect} from "react";
+import {useCallback, useEffect, useMemo} from "react";
 import {TransactionSkeleton} from "@/components/common/SkeletonLoader.tsx";
 import {formatTransactionDate, groupTransactionsByDate} from "@/lib/utils.ts";
 
 export default function Transaction() {
     const navigate = useNavigate();
-    const handleRedirectDashboard = () => {
+    const handleRedirectDashboard = useCallback(() => {
         navigate('/');
-    }
+    }, [navigate]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -25,9 +25,13 @@ export default function Transaction() {
         isDeleting
     } = useTransactionQuery();
 
-    const handleDelete = (id: string) => {
+    const handleDelete = useCallback((id: string) => {
         deleteTransaction(id);
-    }
+    }, [deleteTransaction]);
+
+    const groupedTransactions = useMemo(() => 
+        transactions ? groupTransactionsByDate(transactions) : [], 
+    [transactions]);
 
     if (isLoading) {
         return (
@@ -53,7 +57,7 @@ export default function Transaction() {
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
                 {transactions && transactions.length > 0 ? (
-                    groupTransactionsByDate(transactions).map(({date, transactions: dayTransactions}) => (
+                    groupedTransactions.map(({date, transactions: dayTransactions}) => (
                         <div key={date} className={'mb-3'}>
                             <h3 className="font-medium text-gray-900 mb-3 sticky top-0 bg-white py-2">{formatTransactionDate(date)}</h3>
                             <div className={'space-y-2'}>

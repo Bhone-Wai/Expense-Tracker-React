@@ -1,14 +1,16 @@
 import {Badge} from "@/components/ui/badge.tsx";
-import {TimelineIndicator} from "@/components/monthly_history/TimelineIndicator.tsx";
-import {FinancialMetricCard} from "@/components/monthly_history/FinancialMetricCard.tsx";
+import {TimelineIndicator} from "@/components/monthly-history/TimelineIndicator.tsx";
+import {FinancialMetricCard} from "@/components/monthly-history/FinancialMetricCard.tsx";
 import type {MonthlyFinancialData} from "@/types/financial.ts";
+import {useCallback} from "react";
+import {format} from "date-fns";
 
 interface MonthlyFinancialCardProps {
     data: MonthlyFinancialData;
 }
 
 export function MonthlyFinancialCard({ data }: MonthlyFinancialCardProps) {
-    const getBadgeProps = () => {
+    const getBadgeProps = useCallback(() => {
         if (data.status === 'active') {
             return {
                 className: 'bg-green-50 text-green-700 border-green-200',
@@ -19,23 +21,19 @@ export function MonthlyFinancialCard({ data }: MonthlyFinancialCardProps) {
             className: 'bg-gray-50 text-gray-700 border-gray-200',
             children: 'Completed'
         };
-    };
+    }, [data.status]);
 
-    const formatMonthYear = () => {
-        const monthNames = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
-        return `${monthNames[data.month - 1]} ${data.year}`;
-    }
+    const formatMonthYear = useCallback(() => {
+        return format(new Date(data.year, data.month - 1), 'MMMM yyyy');
+    }, [data.year, data.month]);
 
-    const getStatusText = () => {
+    const getStatusText = useCallback(() => {
         if (data.isCurrentMonth) {
             return `Current month • ${data.totalTransactions} transactions`;
         }
         const monthsAgo = new Date().getMonth() - data.month + 1;
         return `${monthsAgo} month${monthsAgo > 1 ? 's' : ''} ago • ${data.totalTransactions} transactions`
-    }
+    }, [data.isCurrentMonth, data.totalTransactions, data.month]);
 
     return (
         <div className={'relative'}>

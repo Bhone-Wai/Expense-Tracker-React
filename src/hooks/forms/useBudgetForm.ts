@@ -1,6 +1,7 @@
 import useBudgetQuery from "@/hooks/queries/useBudgetQuery.ts";
 import {useEffect, useMemo, useState} from "react";
 import type {BudgetInput} from "@/types/budget.ts";
+import {useAuth, useClerk} from "@clerk/clerk-react";
 
 const INITIAL_BUDGETS = {
     NEEDS: 0,
@@ -10,6 +11,8 @@ const INITIAL_BUDGETS = {
 
 export default function useBudgetForm(isOpen: boolean) {
     const { budgets, setBudgets, isSettingBudgets, setBudgetSuccess } = useBudgetQuery();
+    const { isSignedIn } = useAuth();
+    const { redirectToSignIn } = useClerk();
 
     const [budgetsState, setBudgetsState] = useState(INITIAL_BUDGETS);
 
@@ -38,6 +41,11 @@ export default function useBudgetForm(isOpen: boolean) {
     };
 
     const handleSubmit = () => {
+        if (!isSignedIn) {
+            redirectToSignIn();
+            return;
+        }
+
         const input: BudgetInput[] = Object.entries(budgetsState)
             .filter(([_, amount]) => amount > 0)
             .map(([category, amount]) => ({

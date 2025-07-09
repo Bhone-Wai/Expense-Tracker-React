@@ -10,8 +10,7 @@ export default function Header() {
 
     useEffect(() => {
         const fetchToken = async () => {
-            const token = await getToken();
-            console.log('JWT Token: ', token);
+            await getToken();
         }
         fetchToken();
     }, [isSignedIn]);

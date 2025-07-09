@@ -4,7 +4,8 @@ import api from "@/lib/api.ts";
 export const useBudgetApi = () => {
     const { getToken } = useAuth();
     const getAuthHeaders = async () => ({
-        Authorization: `Bearer ${await getToken()}`
+        Authorization: `Bearer ${await getToken()}`,
+        'Content-Type': 'application/json'
     });
 
     const fetchBudgetByMonth = async (month: number, year: number) => {
@@ -22,20 +23,13 @@ export const useBudgetApi = () => {
     }
 
     const setMonthlyBudget = async (budgets: { category: string,  amount: number }[], month: number, year: number) => {
-        const token = await getToken();
-        const [res] = await Promise.all([
-            api.post('/budgets/monthly-setup', {
-                budgets,
-                month,
-                year,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-            }),
-            new Promise(resolve => setTimeout(resolve, 1000))
-        ])
+        const res = await api.post('/budgets/monthly-setup', {
+            budgets,
+            month,
+            year,
+        }, {
+            headers: await getAuthHeaders(),
+        })
         return res.data
     }
 

@@ -12,7 +12,7 @@ import {format} from "date-fns";
 import {useEffect, useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
 import useBudgetForm from "@/hooks/forms/useBudgetForm.ts";
-import BudgetField from "@/components/budget_overview/BudgetField.tsx";
+import BudgetField from "@/components/budget-overview/BudgetField.tsx";
 import {formatCurrencyTHB, getCategoryMeta} from "@/lib/utils.ts";
 import {EXPENSE_CATEGORIES} from "@/types/enums.ts";
 

@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import {type ExpenseCategory, type IncomeCategory, TRANSACTION_TYPES, type TransactionType} from "@/types/enums.ts";
 import type {Transaction} from "@/types/transaction.ts";
 import {expenseCategoryMeta, incomeCategoryMeta} from "@/constants/categoryMeta.ts";
+import {format, isToday, isYesterday, parseISO, setHours, setMinutes, setSeconds, setMilliseconds} from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,34 +27,28 @@ export const isValidTransactionType = (type: string): type is TransactionType =>
 
 
 // Date Helpers
-export const mergeDateWithCurrentTime = (date: string) => {
+export const mergeDateWithCurrentTime = (dateString: string) => {
   const now = new Date();
-  const selected = new Date(date);
-  now.setFullYear(selected.getFullYear());
-  now.setMonth(selected.getMonth());
-  now.setDate(selected.getDate());
-  return now;
+  let date = parseISO(dateString);
+  date = setHours(date, now.getHours());
+  date = setMinutes(date, now.getMinutes());
+  date = setSeconds(date, now.getSeconds());
+  date = setMilliseconds(date, now.getMilliseconds());
+  return date;
 }
 
 export const formatTransactionDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
+  const date = parseISO(dateString);
 
-  if (date.toDateString() === today.toDateString()) return 'Today';
-  if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+  if (isToday(date)) return 'Today';
+  if (isYesterday(date)) return 'Yesterday';
 
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  return format(date, 'MMM d, yyyy');
 }
 
 export const groupTransactionsByDate = (transactions: Transaction[]) => {
   const grouped = transactions.reduce((acc: Record<string, Transaction[]>, tx) => {
-    const key = new Date(tx.date).toDateString();
+    const key = format(parseISO(tx.date), 'yyyy-MM-dd'); // Use a consistent format for the key
     if (!acc[key]) acc[key] = [];
     acc[key].push(tx);
     return acc;
